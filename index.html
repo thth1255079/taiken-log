@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>体験ログ｜見えない変化の記録庫</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=DM+Mono:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1814;
+    --paper: #f5f0e8;
+    --paper-dark: #ede6d6;
+    --mist: #8c8070;
+    --accent: #5c4a2a;
+    --accent-light: #c4a882;
+    --rule: #d4c8b0;
+    --tag-zen: #4a6741;
+    --tag-body: #41546a;
+    --tag-heal: #6a4157;
+    --tag-chan: #5a4a6a;
+    --tag-rei: #4a5a6a;
+    --tag-te: #6a5a41;
+    --tag-other: #5a5a5a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* ── 紙の質感 ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 200px;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* ── ヘッダー ── */
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding: 48px 0 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+  }
+
+  .site-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    position: relative;
+  }
+
+  .site-title::before {
+    content: '体験ログ';
+    display: block;
+    font-size: 0.55em;
+    font-weight: 400;
+    color: var(--mist);
+    letter-spacing: 0.2em;
+    margin-bottom: 4px;
+  }
+
+  .site-subtitle {
+    font-size: 13px;
+    color: var(--mist);
+    letter-spacing: 0.15em;
+    font-family: 'DM Mono', monospace;
+    font-style: italic;
+  }
+
+  .header-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--mist);
+    letter-spacing: 0.1em;
+    text-align: right;
+    line-height: 2;
+  }
+
+  /* ── メインナビ ── */
+  nav {
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-tab {
+    padding: 14px 20px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--mist);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  .nav-tab:hover { color: var(--ink); }
+  .nav-tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* ── メインレイアウト ── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 32px;
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* ── コンセプト文 ── */
+  .concept {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .concept.visible { display: block; }
+
+  .concept-text {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 15px;
+    line-height: 2.2;
+    color: var(--ink);
+    border-left: 3px solid var(--accent-light);
+    padding-left: 24px;
+    margin-bottom: 32px;
+  }
+
+  .concept-text em {
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* ── ルール ── */
+  .rules-section {
+    margin-top: 40px;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--mist);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .rule-list {
+    list-style: none;
+  }
+
+  .rule-list li {
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .rule-ng { color: #8b3a3a; font-family: 'DM Mono', monospace; font-size: 10px; flex-shrink: 0; }
+  .rule-ok { color: var(--tag-zen); font-family: 'DM Mono', monospace; font-size: 10px; flex-shrink: 0; }
+
+  /* ── 投稿フィード ── */
+  .feed { display: none; animation: fadeIn 0.3s ease; }
+  .feed.visible { display: block; }
+
+  .feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+
+  .feed-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--mist);
+  }
+
+  /* ── 投稿カード ── */
+  .post {
+    border-top: 1px solid var(--rule);
+    padding: 28px 0;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .post:first-child { border-top: 2px solid var(--ink); }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .post-no {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--mist);
+  }
+
+  .genre-tag {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    color: white;
+    font-weight: 500;
+  }
+
+  .tag-瞑想 { background: var(--tag-zen); }
+  .tag-整体 { background: var(--tag-body); }
+  .tag-ヒーリング { background: var(--tag-heal); }
+  .tag-チャネリング { background: var(--tag-chan); }
+  .tag-霊視 { background: var(--tag-rei); }
+  .tag-手かざし { background: var(--tag-te); }
+  .tag-その他 { background: var(--tag-other); }
+
+  .post-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--mist);
+    margin-left: auto;
+  }
+
+  .post-body {
+    display: grid;
+    gap: 0;
+  }
+
+  .post-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--rule);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .post-row:last-child { border-bottom: none; }
+
+  .row-label {
+    font-size: 11px;
+    color: var(--mist);
+    letter-spacing: 0.1em;
+    padding-top: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .row-value { color: var(--ink); }
+
+  .cost-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    background: var(--paper-dark);
+    padding: 2px 8px;
+    border: 1px solid var(--accent-light);
+    border-radius: 2px;
+  }
+
+  /* ── 投稿フォーム ── */
+  .form-section { display: none; animation: fadeIn 0.3s ease; }
+  .form-section.visible { display: block; }
+
+  .form-intro {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 14px;
+    line-height: 2;
+    color: var(--mist);
+    margin-bottom: 32px;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--mist);
+    margin-bottom: 8px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .form-label span {
+    color: #8b3a3a;
+    margin-left: 4px;
+  }
+
+  .form-select,
+  .form-input,
+  .form-textarea {
+    width: 100%;
+    background: var(--paper-dark);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 10px 14px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+
+  .form-select:focus,
+  .form-input:focus,
+  .form-textarea:focus {
+    border-color: var(--accent);
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.8;
+  }
+
+  .form-note {
+    font-size: 11px;
+    color: var(--mist);
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .submit-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 14px 40px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 15px;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 2px;
+    margin-top: 8px;
+  }
+
+  .submit-btn:hover {
+    background: var(--accent);
+  }
+
+  .preview-notice {
+    font-size: 12px;
+    color: var(--mist);
+    margin-top: 16px;
+    padding: 12px;
+    border: 1px dashed var(--rule);
+    line-height: 1.7;
+  }
+
+  /* ── サイドバー ── */
+  .sidebar {
+    position: sticky;
+    top: 56px;
+  }
+
+  .sidebar-card {
+    background: var(--paper-dark);
+    border: 1px solid var(--rule);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .sidebar-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--mist);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  .genre-list {
+    list-style: none;
+  }
+
+  .genre-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    font-size: 13px;
+    transition: color 0.2s;
+  }
+
+  .genre-item:last-child { border-bottom: none; }
+  .genre-item:hover { color: var(--accent); }
+
+  .genre-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--mist);
+  }
+
+  .genre-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .stat-box {
+    text-align: center;
+    padding: 10px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+  }
+
+  .stat-num {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 24px;
+    color: var(--ink);
+    display: block;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--mist);
+    letter-spacing: 0.1em;
+  }
+
+  .write-btn {
+    display: block;
+    width: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 14px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .write-btn:hover { background: var(--accent); }
+
+  /* ── 確認モーダル ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 24, 20, 0.7);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.visible { display: flex; animation: fadeIn 0.2s ease; }
+
+  .modal {
+    background: var(--paper);
+    max-width: 540px;
+    width: 100%;
+    padding: 40px;
+    border: 1px solid var(--rule);
+    position: relative;
+  }
+
+  .modal-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .modal-sub {
+    font-size: 12px;
+    color: var(--mist);
+    margin-bottom: 24px;
+    letter-spacing: 0.05em;
+  }
+
+  .modal-preview {
+    background: var(--paper-dark);
+    border: 1px solid var(--rule);
+    padding: 20px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    line-height: 2;
+  }
+
+  .modal-preview .pr { color: var(--mist); font-size: 11px; font-family: 'DM Mono', monospace; }
+
+  .modal-buttons {
+    display: flex;
+    gap: 12px;
+  }
+
+  .btn-confirm {
+    flex: 1;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 12px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 14px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+  }
+
+  .btn-back {
+    flex: 1;
+    background: none;
+    color: var(--mist);
+    border: 1px solid var(--rule);
+    padding: 12px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  /* ── 成功メッセージ ── */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 48px 0;
+  }
+
+  .success-msg.visible { display: block; animation: fadeIn 0.4s ease; }
+
+  .success-mark {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .success-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .success-text {
+    font-size: 13px;
+    color: var(--mist);
+    line-height: 2;
+  }
+
+  /* ── フッター ── */
+  footer {
+    border-top: 1px solid var(--rule);
+    margin-top: 80px;
+    padding: 32px;
+    text-align: center;
+  }
+
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--mist);
+    letter-spacing: 0.1em;
+    line-height: 2;
+  }
+
+  /* ── アニメーション ── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── レスポンシブ ── */
+  @media (max-width: 700px) {
+    .container {
+      grid-template-columns: 1fr;
+      padding: 24px 20px;
+    }
+
+    .header-inner { padding: 0 20px; grid-template-columns: 1fr; }
+    .header-date { text-align: left; }
+    .sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .sidebar-card:last-child { grid-column: 1 / -1; }
+    .nav-inner { padding: 0 20px; }
+
+    .post-row { grid-template-columns: 100px 1fr; }
+  }
+
+  /* ── ジャンルフィルター状態 ── */
+  .post.hidden { display: none; }
+
+  .filter-active .genre-item { opacity: 0.4; }
+  .filter-active .genre-item.selected { opacity: 1; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="site-title">見えない変化の記録庫</div>
+      <div class="site-subtitle">phenomenon archive · since 2025</div>
+    </div>
+    <div class="header-date">
+      <div>立場を問わない</div>
+      <div>体験だけが残る</div>
+      <div>解釈はいらない</div>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <button class="nav-tab active" onclick="showSection('feed', this)">投稿一覧</button>
+    <button class="nav-tab" onclick="showSection('concept', this)">このサイトについて</button>
+    <button class="nav-tab" onclick="showSection('form-section', this)">体験を書く</button>
+  </div>
+</nav>
+
+<div class="container">
+  <main>
+
+    <!-- 投稿一覧 -->
+    <div class="feed visible" id="feed">
+      <div class="feed-header">
+        <div class="section-label">ALL POSTS</div>
+        <div class="feed-count" id="feed-count">10 件</div>
+      </div>
+
+      <div id="posts-container">
+        <!-- 投稿データはJSで生成 -->
+      </div>
+    </div>
+
+    <!-- このサイトについて -->
+    <div class="concept" id="concept">
+      <div class="section-label">ABOUT THIS ARCHIVE</div>
+
+      <div class="concept-text">
+        ここは、<em>体験だけが残る場所</em>です。<br><br>
+
+        瞑想、整体、ヒーリング、チャネリング、霊視、手かざし──<br>
+        さまざまな行為によって「何が起きたか」を記録するための場です。<br><br>
+
+        正しさはいりません。<br>
+        解釈もいりません。<br><br>
+
+        ただ、<br>
+        何をして、どうなったか。<br><br>
+
+        それだけを書いてください。
+      </div>
+
+      <div class="concept-text" style="margin-top: 24px; border-color: var(--accent);">
+        この場所は、<em>立場を問いません</em>。<br><br>
+
+        宗教に関わっている人も、そうでない人も、どこにも属していない人も、<br>
+        本当は体験しているのに「怪しまれるかもしれない」と言えなかったことを、<br>
+        そのまま書いていい場所です。<br><br>
+
+        この記録は、誰かの判断材料になります。<br>
+        さまざまな体験を横断的に見ることで、<br>
+        <em>自分に合うものを、自分で選ぶ</em>ことができます。
+      </div>
+
+      <div class="rules-section">
+        <div class="section-label">POSTING RULES</div>
+        <ul class="rule-list">
+          <li><span class="rule-ng">NG</span>勧誘、営業、宗教活動（勧誘を想起させる表現を含む）</li>
+          <li><span class="rule-ng">NG</span>「絶対に効く」「これが正しい」などの断定表現</li>
+          <li><span class="rule-ng">NG</span>恐怖を煽る内容（呪い・祟り・不安を煽る表現）</li>
+          <li><span class="rule-ng">NG</span>医療行為の代替を示唆する内容</li>
+          <li><span class="rule-ng">NG</span>内容が長すぎるもの・連続投稿・主張が中心のもの</li>
+          <li><span class="rule-ok">OK</span>体験・感覚・変化</li>
+          <li><span class="rule-ok">OK</span>料金の記載（特定の店舗・個人が特定できる情報は控える）</li>
+        </ul>
+        <p style="font-size:12px; color:var(--mist); margin-top:16px; line-height:1.8;">
+          ※ すべての投稿は管理者が確認後に掲載されます<br>
+          ※ コメント機能はありません（体験の純度を保つため）<br>
+          ※「語りはOK、支配はNG」
+        </p>
+      </div>
+    </div>
+
+    <!-- 投稿フォーム -->
+    <div class="form-section" id="form-section">
+      <div class="section-label">SUBMIT YOUR EXPERIENCE</div>
+      <div class="form-intro">
+        「何をして、どうなったか」だけを書いてください。<br>
+        意味や解釈は書かなくて大丈夫です。<br>
+        管理者確認後に掲載されます。
+      </div>
+
+      <a href="https://docs.google.com/forms/d/1T40JRuxKlNaK-hnsGi00BJF-NosftF25ggXKxeQfTG0/viewform" target="_blank" class="submit-btn" style="display:inline-block; text-decoration:none; margin-bottom:16px;">
+        投稿フォームを開く →
+      </a>
+
+      <div class="preview-notice">
+        投稿内容は管理者が確認後に掲載されます。<br>
+        勧誘・断定・恐怖を煽る内容は掲載されません。<br>
+        料金の記載はOKです。特定の店舗・個人がわかる情報は控えてください。
+      </div>
+    </div>
+
+  </main>
+
+  <!-- サイドバー -->
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">STATISTICS</div>
+      <div class="stat-grid">
+        <div class="stat-box">
+          <span class="stat-num" id="total-count">10</span>
+          <span class="stat-label">TOTAL</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">7</span>
+          <span class="stat-label">GENRES</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card" id="genre-sidebar">
+      <div class="sidebar-title">GENRE FILTER</div>
+      <ul class="genre-list" id="genre-filter-list">
+        <li class="genre-item" data-genre="all" onclick="filterGenre('all', this)">
+          <span><span class="genre-dot" style="background:#888"></span>すべて</span>
+          <span class="genre-count" id="count-all">10</span>
+        </li>
+        <li class="genre-item" data-genre="瞑想" onclick="filterGenre('瞑想', this)">
+          <span><span class="genre-dot" style="background:var(--tag-zen)"></span>瞑想</span>
+          <span class="genre-count" id="count-瞑想">0</span>
+        </li>
+        <li class="genre-item" data-genre="整体" onclick="filterGenre('整体', this)">
+          <span><span class="genre-dot" style="background:var(--tag-body)"></span>整体</span>
+          <span class="genre-count" id="count-整体">0</span>
+        </li>
+        <li class="genre-item" data-genre="ヒーリング" onclick="filterGenre('ヒーリング', this)">
+          <span><span class="genre-dot" style="background:var(--tag-heal)"></span>ヒーリング</span>
+          <span class="genre-count" id="count-ヒーリング">0</span>
+        </li>
+        <li class="genre-item" data-genre="チャネリング" onclick="filterGenre('チャネリング', this)">
+          <span><span class="genre-dot" style="background:var(--tag-chan)"></span>チャネリング</span>
+          <span class="genre-count" id="count-チャネリング">0</span>
+        </li>
+        <li class="genre-item" data-genre="霊視" onclick="filterGenre('霊視', this)">
+          <span><span class="genre-dot" style="background:var(--tag-rei)"></span>霊視</span>
+          <span class="genre-count" id="count-霊視">0</span>
+        </li>
+        <li class="genre-item" data-genre="手かざし" onclick="filterGenre('手かざし', this)">
+          <span><span class="genre-dot" style="background:var(--tag-te)"></span>手かざし</span>
+          <span class="genre-count" id="count-手かざし">0</span>
+        </li>
+        <li class="genre-item" data-genre="その他" onclick="filterGenre('その他', this)">
+          <span><span class="genre-dot" style="background:var(--tag-other)"></span>その他</span>
+          <span class="genre-count" id="count-その他">0</span>
+        </li>
+      </ul>
+    </div>
+
+    <a href="https://docs.google.com/forms/d/1T40JRuxKlNaK-hnsGi00BJF-NosftF25ggXKxeQfTG0/viewform" target="_blank" class="write-btn" style="text-decoration:none; display:block;">
+      体験を書く →
+    </a>
+  </aside>
+</div>
+
+<!-- 確認モーダル -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title">投稿確認</div>
+    <div class="modal-sub">内容を確認してください。送信後、管理者審査があります。</div>
+    <div class="modal-preview" id="modal-preview"></div>
+    <div class="modal-buttons">
+      <button class="btn-back" onclick="closeModal()">← 戻る</button>
+      <button class="btn-confirm" onclick="submitPost()">送信する</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-text">
+    体験ログ｜見えない変化の記録庫<br>
+    ここは、信じさせる場所ではなく、比較できる場所です。<br>
+    <span style="font-size:10px; opacity:0.6">語りはOK、支配はNG</span>
+  </div>
+</footer>
+
+<script>
+// ── 初期投稿データ ──
+const initialPosts = [
+  {
+    id: 1,
+    genre: '瞑想',
+    did: '5分間、目を閉じて呼吸を意識した',
+    state: '少し焦りがあった',
+    happened: '途中で呼吸がゆっくりになった',
+    after: '終わったあと気持ちが落ち着いた',
+    feel: '短くても変化を感じた',
+    cost: '0円',
+    date: '2025.03.01'
+  },
+  {
+    id: 2,
+    genre: '整体',
+    did: '首と肩の施術を受けた（60分）',
+    state: '肩こりが数週間続いていた',
+    happened: '施術中、体が温かくなった。途中でウトウトした',
+    after: '翌日、首の可動域が広がった感じがした',
+    feel: 'スッキリした。また行きたい',
+    cost: '8,000円',
+    date: '2025.03.04'
+  },
+  {
+    id: 3,
+    genre: 'ヒーリング',
+    did: '遠隔ヒーリングを1時間受けた',
+    state: '精神的に疲れていた時期だった',
+    happened: 'セッション中、手のひらがじんわり温かくなった',
+    after: '受けた翌日から、気持ちが少し軽くなった',
+    feel: 'プラシーボかもしれないが、変化はあった',
+    cost: '15,000円',
+    date: '2025.03.06'
+  },
+  {
+    id: 4,
+    genre: '瞑想',
+    did: '20分間のボディスキャン瞑想（音声ガイド付き）',
+    state: 'とくに不調はなかった',
+    happened: '終盤、体の感覚がなくなるような感覚があった',
+    after: '夜の睡眠が深くなった気がした',
+    feel: '初めてそういう感覚になったので驚いた',
+    cost: '0円',
+    date: '2025.03.08'
+  },
+  {
+    id: 5,
+    genre: 'チャネリング',
+    did: 'チャネラーのセッションを受けた（オンライン・45分）',
+    state: '仕事の方向性について迷っていた',
+    happened: '言われたことの一部が、ちょうど考えていたことと重なった',
+    after: '特に大きな変化はなかったが、整理できた感じはあった',
+    feel: '一致した部分が気になっている',
+    cost: '20,000円',
+    date: '2025.03.10'
+  },
+  {
+    id: 6,
+    genre: '手かざし',
+    did: '手かざし療法の体験会に参加（30分）',
+    state: '好奇心から参加、体調は普通',
+    happened: '手をかざされた部分がじんじんした。温感というより電気のような感じ',
+    after: '特に変化は感じなかったが、眠くなった',
+    feel: '感覚はあった。効果かどうかはわからない',
+    cost: '無料（体験会）',
+    date: '2025.03.12'
+  },
+  {
+    id: 7,
+    genre: '霊視',
+    did: '霊視セッションを受けた（対面・30分）',
+    state: '大切な人を亡くして間もない時期だった',
+    happened: '故人の特徴に当てはまることをいくつか言われた',
+    after: 'その後少し泣いた。気持ちは楽になった',
+    feel: '全部当たっていたわけではないが、気持ちの整理になった',
+    cost: '10,000円',
+    date: '2025.03.14'
+  },
+  {
+    id: 8,
+    genre: '整体',
+    did: 'クラニオセイクラル（頭蓋仙骨療法）を受けた（90分）',
+    state: '慢性的な頭痛があった',
+    happened: 'ほとんど触れない施術だったが、途中でまぶたが重くなった',
+    after: '施術後3日間、頭痛が出なかった',
+    feel: 'なぜ効いたのかはわからないが、結果として頭痛が減った',
+    cost: '12,000円',
+    date: '2025.03.17'
+  },
+  {
+    id: 9,
+    genre: '瞑想',
+    did: 'マントラを繰り返す瞑想（15分）',
+    state: 'やや不安感があった',
+    happened: '繰り返すうちに思考がとまった',
+    after: '不安感が薄れた。体が重くなった感じもあった',
+    feel: '音の繰り返しが効いたのかもしれない',
+    cost: '0円',
+    date: '2025.03.20'
+  },
+  {
+    id: 10,
+    genre: 'その他',
+    did: 'アーシング（素足で土の上を30分歩いた）',
+    state: '都市生活が続いて疲れていた',
+    happened: '足裏から何かが抜けていくような感覚',
+    after: '翌朝、目覚めが良かった',
+    feel: '単純に外を歩いた効果かもしれないが、気持ち良かった',
+    cost: '0円',
+    date: '2025.03.22'
+  }
+];
+
+let posts = [...initialPosts];
+let currentFilter = 'all';
+
+// ── 投稿レンダリング ──
+function renderPosts() {
+  const container = document.getElementById('posts-container');
+  const filtered = currentFilter === 'all' ? posts : posts.filter(p => p.genre === currentFilter);
+  
+  container.innerHTML = filtered.map((p, i) => `
+    <article class="post" data-genre="${p.genre}">
+      <div class="post-meta">
+        <span class="post-no">No.${p.id}</span>
+        <span class="genre-tag tag-${p.genre}">${p.genre}</span>
+        <span class="post-date">${p.date}</span>
+      </div>
+      <div class="post-body">
+        <div class="post-row">
+          <span class="row-label">やったこと</span>
+          <span class="row-value">${p.did}</span>
+        </div>
+        ${p.state ? `<div class="post-row">
+          <span class="row-label">その時の状態</span>
+          <span class="row-value">${p.state}</span>
+        </div>` : ''}
+        <div class="post-row">
+          <span class="row-label">起きたこと</span>
+          <span class="row-value">${p.happened}</span>
+        </div>
+        <div class="post-row">
+          <span class="row-label">その後どうなった</span>
+          <span class="row-value">${p.after}</span>
+        </div>
+        ${p.feel ? `<div class="post-row">
+          <span class="row-label">感想</span>
+          <span class="row-value">${p.feel}</span>
+        </div>` : ''}
+        ${p.cost ? `<div class="post-row">
+          <span class="row-label">料金</span>
+          <span class="row-value"><span class="cost-badge">${p.cost}</span></span>
+        </div>` : ''}
+      </div>
+    </article>
+  `).join('');
+
+  document.getElementById('feed-count').textContent = filtered.length + ' 件';
+}
+
+// ── ジャンルカウント更新 ──
+function updateCounts() {
+  const genres = ['瞑想','整体','ヒーリング','チャネリング','霊視','手かざし','その他'];
+  document.getElementById('count-all').textContent = posts.length;
+  document.getElementById('total-count').textContent = posts.length;
+  genres.forEach(g => {
+    const el = document.getElementById('count-' + g);
+    if (el) el.textContent = posts.filter(p => p.genre === g).length;
+  });
+}
+
+// ── ジャンルフィルター ──
+function filterGenre(genre, el) {
+  currentFilter = genre;
+  document.querySelectorAll('.genre-item').forEach(item => item.classList.remove('selected'));
+  el.classList.add('selected');
+
+  const sidebar = document.getElementById('genre-sidebar');
+  if (genre === 'all') {
+    sidebar.classList.remove('filter-active');
+  } else {
+    sidebar.classList.add('filter-active');
+    el.classList.add('selected');
+  }
+  renderPosts();
+}
+
+// ── タブ切替 ──
+function showSection(id, btn) {
+  document.querySelectorAll('.feed, .concept, .form-section').forEach(el => el.classList.remove('visible'));
+  document.getElementById(id).classList.add('visible');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+// ── 投稿プレビュー ──
+function previewPost() {
+  const genre = document.getElementById('f-genre').value;
+  const did = document.getElementById('f-did').value.trim();
+  const happened = document.getElementById('f-happened').value.trim();
+  const after = document.getElementById('f-after').value.trim();
+
+  if (!genre || !did || !happened || !after) {
+    alert('必須項目（ジャンル・やったこと・起きたこと・その後どうなった）を入力してください');
+    return;
+  }
+
+  const state = document.getElementById('f-state').value.trim();
+  const feel = document.getElementById('f-feel').value.trim();
+  const cost = document.getElementById('f-cost').value.trim();
+
+  const preview = document.getElementById('modal-preview');
+  preview.innerHTML = `
+    <div><span class="pr">ジャンル　</span>${genre}</div>
+    <div><span class="pr">やったこと</span>${did}</div>
+    ${state ? `<div><span class="pr">その時　　</span>${state}</div>` : ''}
+    <div><span class="pr">起きたこと</span>${happened}</div>
+    <div><span class="pr">その後　　</span>${after}</div>
+    ${feel ? `<div><span class="pr">感想　　　</span>${feel}</div>` : ''}
+    ${cost ? `<div><span class="pr">料金　　　</span>${cost}</div>` : ''}
+  `;
+
+  document.getElementById('modal').classList.add('visible');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('visible');
+}
+
+// ── 投稿送信（デモ：実際はGoogleフォーム等に接続） ──
+function submitPost() {
+  closeModal();
+  document.getElementById('form-body').style.display = 'none';
+  document.getElementById('success-msg').classList.add('visible');
+}
+
+// ── 初期化 ──
+updateCounts();
+renderPosts();
+
+// ── モーダル外クリックで閉じる ──
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
