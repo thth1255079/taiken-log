@@ -554,7 +554,52 @@
     .post-row { grid-template-columns: 100px 1fr; }
   }
 
-  .post.hidden { display: none; }
+  .post.hidden { display: none; }  /* ============== 明るく暖かみのある発言小町風スタイル ============== */
+  body {
+    background-color: #fffaf0;     /* 優しいアイボリー背景 */
+    color: #333333;                /* 本文を濃くして見やすく */
+    font-weight: 450;
+    line-height: 1.78;
+    font-family: system-ui, -apple-system, "Helvetica Neue", Arial, "Hiragino Sans", sans-serif;
+    font-size: 1.05rem;
+  }
+
+  h1, h2, h3, .title, .thread-title, .site-title {
+    color: #2c2c2c;
+    font-weight: 600;
+  }
+
+  /* 投稿カードを小町風に */
+  .post, .entry, article, .thread, .experience, 
+  .post-row, #all-posts > div, .post-item {
+    background-color: #ffffff;
+    border: 1px solid #e8d9b8;     /* 暖かみベージュ枠 */
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  }
+
+  a {
+    color: #d35400;                /* 親しみやすいオレンジリンク */
+    font-weight: 500;
+  }
+  a:hover {
+    color: #e67e22;
+    text-decoration: underline;
+  }
+
+  main, .content, .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* スマホ対応 */
+  @media (max-width: 600px) {
+    body { font-size: 1.02rem; }
+    .post, .entry { padding: 15px 16px; margin-bottom: 18px; }
+  }
 </style>
 </head>
 <body>
